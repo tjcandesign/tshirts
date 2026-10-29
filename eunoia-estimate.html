@@ -1,0 +1,185 @@
+<title>Eunoia Fall Estimate</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;1,6..96,500&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow estimate sheet, recap up top, priced line items grouped by job, totals set in a brass band */
+:root {
+  --bg: #f6f6f1;
+  --paper: #ffffff;
+  --ink: #1d2620;
+  --muted: #5d685f;
+  --rule: #dcdfd5;
+  --brass: #9a7426;
+  --brass-soft: #f1e8d3;
+  --display: "Bodoni Moda", Didot, "Times New Roman", serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121714; --paper: #19201b; --ink: #e9ece4;
+    --muted: #a3ada2; --rule: #2d3730; --brass: #d4ac5c; --brass-soft: #2b2617;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121714; --paper: #19201b; --ink: #e9ece4; --muted: #a3ada2;
+  --rule: #2d3730; --brass: #d4ac5c; --brass-soft: #2b2617;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body);
+  font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 40px 64px;
+}
+.sheet { max-width: 760px; margin: 0 auto; display: grid; gap: 40px; }
+header { display: grid; gap: 14px; border-bottom: 1px solid var(--rule); padding-bottom: 28px; }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--brass); font-weight: 600; }
+h1 { font-family: var(--display); font-weight: 500; font-size: clamp(34px, 7vw, 52px); line-height: 1.05; margin: 0; text-wrap: balance; }
+h1 em { color: var(--brass); }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 28px; color: var(--muted); font-size: 14px; }
+.meta b { color: var(--ink); font-weight: 600; }
+h2 { font-family: var(--display); font-weight: 500; font-size: 26px; margin: 0; text-wrap: balance; }
+section { display: grid; gap: 16px; }
+.lede { color: var(--muted); margin: 0; max-width: 62ch; }
+ul.recap { margin: 0; padding-left: 18px; display: grid; gap: 8px; max-width: 65ch; }
+ul.recap li::marker { color: var(--brass); }
+.gh { background: var(--brass-soft); border-radius: 4px; padding: 18px 20px; display: grid; gap: 6px; }
+.gh h3 { margin: 0; font-family: var(--display); font-style: italic; font-weight: 500; font-size: 20px; color: var(--brass); }
+.gh p { margin: 0; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; min-width: 520px; }
+th { text-align: left; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 0 10px 8px 0; border-bottom: 1px solid var(--ink); }
+td { padding: 12px 10px 12px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+td.item b { font-weight: 600; display: block; }
+td.item span { color: var(--muted); font-size: 13.5px; }
+td.num, th.num { text-align: right; font-family: var(--mono); font-size: 14px; white-space: nowrap; padding-right: 0; padding-left: 10px; }
+tr.sub td { border-bottom: none; font-weight: 600; padding-top: 14px; }
+tr.sub td.num { color: var(--brass); font-size: 15px; }
+.tag { display: inline-block; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; border: 1px solid var(--brass); color: var(--brass); border-radius: 2px; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; font-weight: 600; }
+.totals { background: var(--ink); color: var(--paper); padding: 24px; border-radius: 4px; display: grid; gap: 10px; }
+.totals .row { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.totals .row span:last-child { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.totals .grand { border-top: 1px solid color-mix(in srgb, var(--paper) 30%, transparent); padding-top: 12px; font-size: 18px; font-weight: 600; }
+.totals .grand span:last-child { color: var(--brass); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+.cols > div { min-width: 0; display: grid; gap: 8px; align-content: start; }
+.cols h3 { margin: 0; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--brass); }
+.cols ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+footer { border-top: 1px solid var(--rule); padding-top: 20px; color: var(--muted); font-size: 13.5px; display: grid; gap: 4px; }
+</style>
+
+<main class="sheet">
+  <header>
+    <div class="eyebrow">Workhorse Studio · Estimate for Eunoia</div>
+    <h1>Shirts, hats &amp; a <em>Golden Hour</em> sidewalk refresh</h1>
+    <div class="meta">
+      <span>Prepared by <b>TJ Cichecki</b></span>
+      <span>Meeting at Eunoia · <b>Oct 29, 2026</b></span>
+      <span>Valid <b>30 days</b></span>
+    </div>
+  </header>
+
+  <section>
+    <h2>What we talked about</h2>
+    <ul class="recap">
+      <li><b>Staff shirts and hats are the priority.</b> Black tees this round (the cream ones show sweat and dirt), same character graphic on the back and the small Eunoia mark on the front. I still have printed graphics from the last run, so these go quickly.</li>
+      <li><b>Hats for the bar team</b> with the character, about 10.</li>
+      <li><b>Replace the A-frame.</b> The plastic water-fill frame with corrugated inserts is leaning and the copy ("Endless") doesn't say what you offer. New metal frame with a crossbar, smooth PVC inserts, and copy that leads with Golden Hour and the neighborhood feel, not discounts.</li>
+      <li><b>Outdoor light-up menu box</b> (about 14×20″) isn't lighting. Check the wiring, relight it, and print a new seasonal outdoor menu for it.</li>
+      <li><b>Menus at the table.</b> The clamp-style wood boards work better than the screw holders. Price more of those, plus a stand with a clip to hold the Golden Hour menu at the bar.</li>
+      <li><b>Bar menu paper</b> that survives spills and still runs through your laser printer. I'll source samples.</li>
+      <li><b>More postcards</b> (3×5 art cards).</li>
+      <li><b>NOA sign:</b> the eye popped off after two years in the sun. I'll re-glue it, no charge.</li>
+    </ul>
+    <div class="gh">
+      <h3>Golden Hour, as we'll pitch it</h3>
+      <p>Happy hour every day, 4pm to close (10pm), except Saturday morning and Sunday. Select beers (Corona, Guinness, Peroni), wines and a few cocktails about $3–4 off, plus quick plates like chicken skewers, shrimp skewers and oysters. Come in after work, sit at the bar, no full dinner needed.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Priority: shirts &amp; hats</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Each</th><th class="num">Total</th></tr></thead>
+        <tbody>
+          <tr><td class="item"><b>Staff T-shirts, black</b><span>10 M · 10 L · 5 XL. Character on back, Eunoia mark on front. Printed in my Capitol Hill shop.</span></td><td class="num">25</td><td class="num">$17.00</td><td class="num">$425.00</td></tr>
+          <tr><td class="item"><b>Embroidered hats</b><span>Character on front, black unstructured cap. Final color to confirm.</span></td><td class="num">10</td><td class="num">$28.00</td><td class="num">$280.00</td></tr>
+          <tr><td class="item"><b>Embroidery setup</b><span>One-time digitizing of the character; reused on future hat orders.</span></td><td class="num">1</td><td class="num">$40.00</td><td class="num">$40.00</td></tr>
+          <tr class="sub"><td>Subtotal</td><td></td><td></td><td class="num">$745.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sidewalk signage</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Each</th><th class="num">Total</th></tr></thead>
+        <tbody>
+          <tr><td class="item"><b>Metal A-frame, 24×36″</b><span>Steel frame with crossbar so it can't splay out. From my shop.</span></td><td class="num">1</td><td class="num">$200.00</td><td class="num">$200.00</td></tr>
+          <tr><td class="item"><b>A-frame inserts, double-sided</b><span>Two 24×36″ smooth PVC panels, full-color print, outdoor-rated.</span></td><td class="num">2</td><td class="num">$65.00</td><td class="num">$130.00</td></tr>
+          <tr><td class="item"><b>Light box menu print</b><span>Backlit film, approx. 14×20″. Exact size confirmed on measure.</span></td><td class="num">1</td><td class="num">$45.00</td><td class="num">$45.00</td></tr>
+          <tr><td class="item"><b>Light box relight</b><span>LED panel retrofit, rewire and install.</span><span class="tag">Est.</span></td><td class="num">1</td><td class="num">$150.00</td><td class="num">$150.00</td></tr>
+          <tr><td class="item"><b>Design &amp; copy</b><span>Both A-frame faces and the outdoor menu layout, at $100/hr.</span></td><td class="num">3 hr</td><td class="num">$100.00</td><td class="num">$300.00</td></tr>
+          <tr class="sub"><td>Subtotal</td><td></td><td></td><td class="num">$825.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Reorders &amp; add-ons</h2>
+    <p class="lede">Same pricing as the opening order. Tell me quantities and I'll add them to the invoice.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th class="num">Unit</th><th class="num">Price</th></tr></thead>
+        <tbody>
+          <tr><td class="item"><b>Clamp menu boards</b><span>Laser-engraved, sanded and stained wood with a pressure clip.</span></td><td class="num">each</td><td class="num">$37.00</td></tr>
+          <tr><td class="item"><b>Golden Hour bar stand</b><span>Stand-up holder with a top clip, sits on the bar.</span></td><td class="num">each</td><td class="num">$46.21</td></tr>
+          <tr><td class="item"><b>Postcards / art cards, 3×5″</b><span>Same stock as last run.</span></td><td class="num">750</td><td class="num">$193.05</td></tr>
+          <tr><td class="item"><b>Extra A-frame insert set</b><span>Second pair of panels to swap by season or event.</span></td><td class="num">pair</td><td class="num">$130.00</td></tr>
+          <tr><td class="item"><b>Water-resistant laser paper</b><span>Synthetic, laser-safe sample pack to test in your printer before buying in bulk.</span><span class="tag">Est.</span></td><td class="num">pack</td><td class="num">$40.00</td></tr>
+          <tr><td class="item"><b>NOA sign repair</b><span>Re-glue the eye.</span></td><td class="num">—</td><td class="num">No charge</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="totals">
+    <div class="row"><span>Shirts &amp; hats</span><span>$745.00</span></div>
+    <div class="row"><span>Sidewalk signage</span><span>$825.00</span></div>
+    <div class="row grand"><span>Estimated total</span><span>$1,570.00</span></div>
+  </div>
+
+  <div class="cols">
+    <div>
+      <h3>What I need from you</h3>
+      <ul>
+        <li>Golden Hour menu: items and prices</li>
+        <li>Outdoor seasonal menu items for the light box</li>
+        <li>Hat color preference</li>
+        <li>Quantities for menu boards, bar stands and postcards</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Next steps</h3>
+      <ul>
+        <li>Approve shirts &amp; hats and I'll start printing</li>
+        <li>I'll measure the light box and check the wiring</li>
+        <li>A-frame copy drafts to you for review</li>
+        <li>Later idea: a white wave line in vinyl along the bottom of the front windows</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <span>Items marked Est. are confirmed after I see the hardware. Payment by ACH or Zelle, same as before.</span>
+    <span>TJ Cichecki · Workhorse Studio · tj@wrkhrs.co</span>
+  </footer>
+</main>
