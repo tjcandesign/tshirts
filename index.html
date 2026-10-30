@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Eunoia Proposal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+/* Layout: Eunoia's wine-list language: airy white page, Plex Condensed, hand-drawn cream line art, gold for money.
+   Sections run like menu categories (category title, region-style label column, item, price). */
+:root {
+  --paper: #fdfcf8;
+  --ink: #23211c;
+  --muted: #6f695c;
+  --rule: #e6e0d2;
+  --line-art: #d6cbb3;
+  --gold: #9c7a33;
+  --band: #f4efe3;
+  --sans: "IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #171511; --ink: #eee8da; --muted: #a59d8b; --rule: #322e26;
+    --line-art: #5b5342; --gold: #d2ae63; --band: #1f1c16;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #171511; --ink: #eee8da; --muted: #a59d8b; --rule: #322e26;
+  --line-art: #5b5342; --gold: #d2ae63; --band: #1f1c16;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--sans); font-weight: 400; font-size: 16px; line-height: 1.5;
+}
+.wrap {
+  max-width: 980px; margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.art {
+  display: block; background: var(--line-art);
+  -webkit-mask: var(--src) center / contain no-repeat; mask: var(--src) center / contain no-repeat;
+}
+.art.friends { --src: url("art/friends.png"); aspect-ratio: 900 / 643; }
+.art.bouquet { --src: url("art/bouquet.png"); aspect-ratio: 360 / 583; }
+.art.harvest { --src: url("art/harvest.png"); aspect-ratio: 400 / 440; }
+
+/* Hero */
+.hero { padding-block: 56px 40px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; align-items: end; }
+.hero > * { min-width: 0; }
+.kicker { font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+h1 { font-weight: 300; font-size: clamp(44px, 9vw, 88px); line-height: .95; letter-spacing: -.01em; margin: 14px 0 20px; text-wrap: balance; }
+h1 i { font-weight: 300; color: var(--gold); }
+.hero p { margin: 0; max-width: 46ch; color: var(--muted); font-size: 18px; font-weight: 300; }
+.hero .art { width: 100%; max-width: 460px; justify-self: end; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 32px; padding-block: 18px; border-block: 1px solid var(--rule); font-size: 14px; color: var(--muted); }
+.facts b { color: var(--ink); font-weight: 500; }
+
+/* Category sections, styled like the wine list */
+section.cat { padding-block: 64px 8px; display: grid; gap: 28px; position: relative; }
+h2 { font-weight: 400; font-size: clamp(30px, 5vw, 40px); margin: 0; text-transform: uppercase; letter-spacing: .02em; line-height: 1; }
+.cat-head { display: grid; gap: 12px; max-width: 60ch; }
+.cat-head p { margin: 0; color: var(--muted); font-weight: 300; font-size: 17px; }
+h3 { font-weight: 400; font-size: 22px; margin: 0 0 4px; }
+.sub { font-size: 14px; color: var(--muted); margin: 0 0 10px; }
+.list { display: grid; gap: 0; }
+.row {
+  display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 6px 22px;
+  padding-block: 14px; border-bottom: 1px solid var(--rule); align-items: baseline;
+}
+.row .where { font-size: 13.5px; color: var(--muted); }
+.row .what b { font-weight: 500; display: block; }
+.row .what i { font-size: 13.5px; color: var(--muted); font-weight: 300; display: block; }
+.row .price { font-family: var(--sans); font-variant-numeric: tabular-nums; font-weight: 500; text-align: right; white-space: nowrap; }
+.row .price small { display: block; font-weight: 300; color: var(--muted); font-size: 12.5px; }
+.est { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); border: 1px solid currentColor; border-radius: 2px; padding: 0 5px; margin-left: 6px; vertical-align: 2px; font-weight: 500; }
+.subtotal { display: flex; justify-content: space-between; gap: 16px; padding-top: 14px; font-weight: 500; }
+.subtotal span:last-child { color: var(--gold); font-variant-numeric: tabular-nums; }
+.side-art { position: absolute; right: 0; top: 52px; width: 120px; pointer-events: none; }
+
+/* Golden Hour band */
+.golden { background: var(--band); margin-top: 64px; }
+.golden .wrap { padding-block: 56px; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.golden h2 { color: var(--gold); }
+.golden h2 small { display: block; font-size: 15px; letter-spacing: .16em; color: var(--muted); margin-top: 10px; }
+.golden p { margin: 0; font-weight: 300; font-size: 18px; max-width: 52ch; }
+.golden ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.golden li { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
+.golden li span:last-child { color: var(--muted); font-size: 14px; }
+.ab { display: grid; gap: 16px; }
+.ab .copy { display: grid; gap: 16px; }
+
+/* Quantity pickers for reorders */
+.qty { display: inline-flex; align-items: center; border: 1px solid var(--rule); border-radius: 3px; }
+.qty button { all: unset; cursor: pointer; width: 30px; height: 30px; text-align: center; color: var(--muted); font-size: 18px; line-height: 30px; }
+.qty button:hover { color: var(--ink); }
+.qty button:focus-visible, .qty input:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.qty input { width: 44px; height: 30px; border: 0; border-inline: 1px solid var(--rule); background: transparent; color: var(--ink); text-align: center; font: inherit; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
+.qty input::-webkit-outer-spin-button, .qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.row.reorder { grid-template-columns: 120px minmax(0, 1fr) auto auto; }
+
+/* Totals */
+.total { margin-top: 64px; border-top: 2px solid var(--ink); padding-top: 24px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+.total .lines { display: grid; gap: 10px; }
+.total .lines div { display: flex; justify-content: space-between; gap: 16px; font-variant-numeric: tabular-nums; }
+.total .lines .grand { border-top: 1px solid var(--rule); padding-top: 12px; font-size: 24px; font-weight: 500; }
+.total .lines .grand span:last-child { color: var(--gold); }
+.total .note { color: var(--muted); font-size: 14px; font-weight: 300; margin: 0; }
+
+.next { padding-block: 64px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px; }
+.next > div { min-width: 0; }
+.next ol, .next ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-weight: 300; }
+.next li::marker { color: var(--gold); }
+footer { border-top: 1px solid var(--rule); padding-block: 28px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 14px; align-items: end; }
+footer .art { width: 110px; }
+
+@media (max-width: 720px) {
+  .hero, .golden .wrap, .total { grid-template-columns: 1fr; }
+  .hero .art { justify-self: start; max-width: 340px; }
+  .row, .row.reorder { grid-template-columns: minmax(0, 1fr) auto; }
+  .row .where { grid-column: 1 / -1; }
+  .row.reorder .qty { grid-column: 1; justify-self: start; }
+  .side-art { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="wrap hero">
+  <div>
+    <div class="kicker">Proposal · Workhorse Studio for Eunoia</div>
+    <h1>Back in the <i>neighborhood</i></h1>
+    <p>New staff shirts and hats, a sidewalk sign that finally says what Golden Hour is, and a few things for the tables and bar. Everything we talked through at Eunoia, priced.</p>
+  </div>
+  <div class="art friends" role="img" aria-label="Eunoia line illustration of two friends sharing produce"></div>
+</header>
+
+<div class="wrap">
+  <div class="facts">
+    <span>Prepared by <b>TJ Cichecki</b></span>
+    <span>Met with <b>the Eunoia team</b></span>
+    <span>Date <b>October 29, 2026</b></span>
+    <span>Valid <b>30 days</b></span>
+  </div>
+</div>
+
+<main>
+  <section class="cat wrap" id="staff">
+    <div class="cat-head">
+      <h2>Staff</h2>
+      <p>Eva's top priority. Black tees this round, since cream shows every splash on the floor. Same character on the back and the small Eunoia mark on the front. I kept the printed graphics from last time, so these turn around quickly in my Capitol Hill shop.</p>
+    </div>
+    <div class="side-art art bouquet" aria-hidden="true"></div>
+    <div class="list">
+      <div class="row">
+        <span class="where">25 tees</span>
+        <span class="what"><b>Staff T-shirts, black</b><i>10 medium · 10 large · 5 XL</i></span>
+        <span class="price">$425<small>$17 each</small></span>
+      </div>
+      <div class="row">
+        <span class="where">10 hats</span>
+        <span class="what"><b>Embroidered hats for the bar team</b><i>Character on the front. Black unstructured cap unless you'd like another color.</i></span>
+        <span class="price">$280<small>$28 each</small></span>
+      </div>
+      <div class="row">
+        <span class="where">One-time</span>
+        <span class="what"><b>Embroidery setup</b><i>Digitizing the character for the machine. Reused on every future hat order.</i></span>
+        <span class="price">$40</span>
+      </div>
+      <div class="subtotal"><span>Staff subtotal</span><span>$745</span></div>
+    </div>
+  </section>
+
+  <div class="golden">
+    <div class="wrap">
+      <div class="ab">
+        <h2>Golden Hour<small>The message for the sidewalk</small></h2>
+        <div class="copy">
+          <p>Happy hour every day from 4pm to close at 10pm, except Saturday mornings and Sundays. Sit at the bar after work, have a drink and a few quick plates, and head home. No full dinner needed.</p>
+          <p>The sign should feel like the room: neighborhood and community, still a little elevated. It invites people in rather than shouting about a discount.</p>
+        </div>
+      </div>
+      <ul aria-label="Golden Hour highlights">
+        <li><span>Corona · Guinness · Peroni</span><span>about $3–4 off</span></li>
+        <li><span>Select wines and cocktails</span><span>about $4 off</span></li>
+        <li><span>Chicken skewers · shrimp skewers</span><span>quick plates</span></li>
+        <li><span>Oysters</span><span>at the bar</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="cat wrap" id="sidewalk">
+    <div class="cat-head">
+      <h2>Sidewalk</h2>
+      <p>The current water-fill A-frame leans open and the corrugated inserts look tired. I have a steel frame with a crossbar in my shop that stands straight. It gets smooth PVC panels with new copy. The outdoor light box gets relit and a new seasonal menu.</p>
+    </div>
+    <div class="side-art art harvest" aria-hidden="true"></div>
+    <div class="list">
+      <div class="row">
+        <span class="where">24 × 36″</span>
+        <span class="what"><b>Steel A-frame with crossbar</b><i>From my shop. Won't splay or blow over.</i></span>
+        <span class="price">$200</span>
+      </div>
+      <div class="row">
+        <span class="where">2 panels</span>
+        <span class="what"><b>A-frame inserts, both sides</b><i>Smooth outdoor PVC, full color.</i></span>
+        <span class="price">$130<small>$65 each</small></span>
+      </div>
+      <div class="row">
+        <span class="where">≈ 14 × 20″</span>
+        <span class="what"><b>Light box menu print</b><i>Backlit film. Final size confirmed when I measure.</i></span>
+        <span class="price">$45</span>
+      </div>
+      <div class="row">
+        <span class="where">On site</span>
+        <span class="what"><b>Light box relight<span class="est">Est.</span></b><i>LED panel retrofit, rewire and install. Confirmed after I open it up.</i></span>
+        <span class="price">$150</span>
+      </div>
+      <div class="row">
+        <span class="where">3 hours</span>
+        <span class="what"><b>Design and copy</b><i>Both A-frame faces and the outdoor menu layout.</i></span>
+        <span class="price">$300<small>$100 / hr</small></span>
+      </div>
+      <div class="subtotal"><span>Sidewalk subtotal</span><span>$825</span></div>
+    </div>
+  </section>
+
+  <section class="cat wrap" id="tables">
+    <div class="cat-head">
+      <h2>Tables &amp; Bar</h2>
+      <p>Reorders at your opening prices. Set the quantities you'd like and the total below updates. The clamp boards are the ones Eva liked; they're quicker to swap than the screw holders.</p>
+    </div>
+    <div class="list">
+      <div class="row reorder">
+        <span class="where">Laser-engraved wood</span>
+        <span class="what"><b>Clamp menu boards</b><i>Sanded and stained, with a pressure clip.</i></span>
+        <span class="qty"><button type="button" data-step="-1" aria-label="Fewer clamp menu boards">−</button><input id="q-boards" type="number" min="0" value="0" data-price="37" aria-label="Clamp menu boards quantity"><button type="button" data-step="1" aria-label="More clamp menu boards">+</button></span>
+        <span class="price">$37<small>each</small></span>
+      </div>
+      <div class="row reorder">
+        <span class="where">For the bar</span>
+        <span class="what"><b>Golden Hour stand</b><i>Stand-up holder with a top clip so guests see the menu as they walk up.</i></span>
+        <span class="qty"><button type="button" data-step="-1" aria-label="Fewer stands">−</button><input id="q-stands" type="number" min="0" value="0" data-price="46.21" aria-label="Golden Hour stand quantity"><button type="button" data-step="1" aria-label="More stands">+</button></span>
+        <span class="price">$46.21<small>each</small></span>
+      </div>
+      <div class="row reorder">
+        <span class="where">3 × 5″</span>
+        <span class="what"><b>Postcards</b><i>Same art cards and stock as last time.</i></span>
+        <span class="qty"><button type="button" data-step="-1" aria-label="Fewer postcard runs">−</button><input id="q-cards" type="number" min="0" value="0" data-price="193.05" aria-label="Postcard runs of 750"><button type="button" data-step="1" aria-label="More postcard runs">+</button></span>
+        <span class="price">$193.05<small>per 750</small></span>
+      </div>
+      <div class="row reorder">
+        <span class="where">24 × 36″</span>
+        <span class="what"><b>Second A-frame insert set</b><i>A spare pair to swap by season or event.</i></span>
+        <span class="qty"><button type="button" data-step="-1" aria-label="Fewer insert sets">−</button><input id="q-inserts" type="number" min="0" value="0" data-price="130" aria-label="Extra insert sets"><button type="button" data-step="1" aria-label="More insert sets">+</button></span>
+        <span class="price">$130<small>per pair</small></span>
+      </div>
+      <div class="row reorder">
+        <span class="where">Bar menus</span>
+        <span class="what"><b>Spill-resistant paper samples<span class="est">Est.</span></b><i>Synthetic, laser-safe stock to test in your printer before buying more.</i></span>
+        <span class="qty"><button type="button" data-step="-1" aria-label="Fewer sample packs">−</button><input id="q-paper" type="number" min="0" value="0" data-price="40" aria-label="Paper sample packs"><button type="button" data-step="1" aria-label="More sample packs">+</button></span>
+        <span class="price">$40<small>per pack</small></span>
+      </div>
+      <div class="row">
+        <span class="where">Out front</span>
+        <span class="what"><b>NOA sign repair</b><i>The eye came off after two summers in the sun. I'll glue it back.</i></span>
+        <span class="price">On me</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="total" aria-live="polite">
+      <div class="lines">
+        <div><span>Staff</span><span>$745.00</span></div>
+        <div><span>Sidewalk</span><span>$825.00</span></div>
+        <div><span>Tables &amp; bar</span><span id="t-extras">$0.00</span></div>
+        <div class="grand"><span>Total</span><span id="t-grand">$1,570.00</span></div>
+      </div>
+      <p class="note">Items marked Est. are confirmed once I see the hardware. No sales tax, same as the opening order. Payment by ACH or Zelle as before. Quantities you set here stay on this device only; reply to my email with your picks and I'll add them to the invoice.</p>
+    </div>
+  </div>
+
+  <div class="wrap next">
+    <div>
+      <h3>Next steps</h3>
+      <ol>
+        <li>Approve staff shirts and hats and I start printing.</li>
+        <li>I come by to measure the light box and check the wiring.</li>
+        <li>A-frame copy and layouts go to you for review.</li>
+        <li>Frame, panels and light box installed together.</li>
+      </ol>
+    </div>
+    <div>
+      <h3>What I need from you</h3>
+      <ul>
+        <li>Golden Hour menu items and prices</li>
+        <li>Outdoor seasonal menu for the light box</li>
+        <li>Hat color</li>
+        <li>Quantities for the reorders above</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Later, if you like</h3>
+      <ul>
+        <li>A white wave line in vinyl along the bottom of the front windows, so the gold logo reads from the street.</li>
+      </ul>
+    </div>
+  </div>
+</main>
+
+<footer class="wrap">
+  <div>
+    <div>TJ Cichecki · Principal Designer, Workhorse Studio</div>
+    <div>tj@wrkhrs.co · 309-533-3328</div>
+  </div>
+  <div class="art bouquet" aria-hidden="true"></div>
+</footer>
+
+<script>
+(() => {
+  const BASE = 745 + 825;
+  const fmt = n => n.toLocaleString("en-US", { style: "currency", currency: "USD" });
+  const inputs = [...document.querySelectorAll(".qty input")];
+  const KEY = "eunoia-proposal-qty";
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY) || "{}");
+    inputs.forEach(i => { if (saved[i.id] != null) i.value = saved[i.id]; });
+  } catch (e) {}
+  function update() {
+    let extras = 0;
+    const state = {};
+    inputs.forEach(i => {
+      const q = Math.max(0, Math.floor(Number(i.value) || 0));
+      i.value = q; state[i.id] = q;
+      extras += q * Number(i.dataset.price);
+    });
+    document.getElementById("t-extras").textContent = fmt(extras);
+    document.getElementById("t-grand").textContent = fmt(BASE + extras);
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  document.querySelectorAll(".qty button").forEach(b => b.addEventListener("click", () => {
+    const i = b.parentElement.querySelector("input");
+    i.value = Math.max(0, (Number(i.value) || 0) + Number(b.dataset.step));
+    update();
+  }));
+  inputs.forEach(i => i.addEventListener("input", update));
+  update();
+})();
+</script>
+</body>
+</html>
